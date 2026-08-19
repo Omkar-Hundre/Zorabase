@@ -1,0 +1,25 @@
+{
+  "name": "@zorabase/sdk",
+  "version": "0.1.0",
+  "description": "Official TypeScript SDK for Zorabase Backend-as-a-Service",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": ["zorabase", "baas", "database", "storage", "auth", "realtime", "sdk"],
+  "license": "MIT",
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3"
+  }
+}

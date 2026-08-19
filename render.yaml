@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: zorabase
+    runtime: node
+    plan: free
+    region: frankfurt # or oregon
+    buildCommand: pnpm install && pnpm build
+    startCommand: pnpm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      - key: AWS_REGION
+        value: eu-north-1
+      - key: AWS_S3_BUCKET
+        value: zorabase
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
