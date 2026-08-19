@@ -33,3 +33,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# Internal Planning & Interview Practice Notes (Local only)
+INTERVIEW_SYSTEM_ARCHITECTURE.md
+Project_Plan.md
+context.md
+convert_guide_to_pdf.py
+*.pdf
