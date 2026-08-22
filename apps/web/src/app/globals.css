@@ -1,5 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Elsie:wght@400;900&family=Gloock&family=Handjet:wght,ELGR,ELSH@100..900,1.1,2&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Elsie:wght@400;900&family=Gloock&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+@font-face {
+  font-family: 'Handjet';
+  src: url('/Handjet-VariableFont_ELGR,ELSH,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --bg-primary: #030303;
@@ -42,6 +50,7 @@ body {
 
 .font-handjet {
   font-family: 'Handjet', monospace;
+  font-variation-settings: 'ELGR' 1.1, 'ELSH' 2;
 }
 
 .font-mono {
