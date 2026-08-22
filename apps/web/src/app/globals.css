@@ -1,13 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Elsie:wght@400;900&family=Gloock&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Silkscreen:wght@400;700&family=Pixelify+Sans:wght@400..700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
-
-@font-face {
-  font-family: 'Handjet';
-  src: url('/Handjet-VariableFont_ELGR,ELSH,wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
 
 :root {
   --bg-primary: #030303;
@@ -32,7 +24,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Inter', sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
@@ -40,17 +32,13 @@ body {
   overflow-x: hidden;
 }
 
-.font-elsie {
-  font-family: 'Elsie', cursive, Georgia, serif;
+/* ─── Nothing Phone Dot-Matrix & Pixel Typography ─── */
+.font-nothing {
+  font-family: 'DotGothic16', 'Silkscreen', monospace;
 }
 
-.font-gloock {
-  font-family: 'Gloock', Georgia, serif;
-}
-
-.font-handjet {
-  font-family: 'Handjet', monospace;
-  font-variation-settings: 'ELGR' 1.1, 'ELSH' 2;
+.font-pixel {
+  font-family: 'Silkscreen', 'DotGothic16', monospace;
 }
 
 .font-mono {
@@ -98,11 +86,12 @@ body {
 
 /* ─── Watermark ─── */
 .brand-watermark-text {
-  font-family: 'Elsie', 'Gloock', Georgia, serif;
-  font-size: clamp(70px, 16vw, 220px);
+  font-family: 'DotGothic16', 'Silkscreen', monospace;
+  font-size: clamp(60px, 14vw, 190px);
   color: #ffffff;
-  opacity: 0.03;
+  opacity: 0.035;
   user-select: none;
   pointer-events: none;
   line-height: 1;
+  letter-spacing: 0.05em;
 }
