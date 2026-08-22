@@ -3,11 +3,10 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
-const codeSnippets: Record<string, { title: string; filename: string; code: string; language: string }> = {
+const codeSnippets: Record<string, { title: string; filename: string; code: string }> = {
   database: {
     title: 'Relational Query Engine',
     filename: 'query.ts',
-    language: 'typescript',
     code: `import { createClient } from '@zorabase/sdk'
 
 export const db = createClient({
@@ -27,7 +26,6 @@ const { data: users, error } = await db
   storage: {
     title: 'Direct S3 Presigned Upload',
     filename: 'upload.ts',
-    language: 'typescript',
     code: `// Direct browser-to-S3 binary streaming (eu-north-1)
 // Bypasses API server CPU & bandwidth completely
 const file = event.target.files[0]
@@ -46,7 +44,6 @@ const { data: signed } = await db.storage
   realtime: {
     title: 'Realtime CDC Replication',
     filename: 'stream.ts',
-    language: 'typescript',
     code: `// Sub-15ms PostgreSQL Write-Ahead Log (WAL) streaming
 const channel = db
   .channel('orders')
@@ -61,7 +58,6 @@ const channel = db
   ai: {
     title: 'Gemini GenAI Database Analyst',
     filename: 'analyst.ts',
-    language: 'typescript',
     code: `// Natural language querying with automated schema introspection
 // Generates persistent live widgets for your dashboard
 const analysis = await db.ai.query({
@@ -87,10 +83,63 @@ const trustTechs = [
   'Tailwind CSS',
 ]
 
+const featuresGrid = [
+  {
+    title: 'Row-Level Security (RLS)',
+    tag: 'Security Engine',
+    desc: 'PostgreSQL policies enforce strict multi-tenant isolation. Public keys cannot cross project or user boundaries.',
+  },
+  {
+    title: 'Zero-Server Bandwidth Uploads',
+    tag: 'Object Storage',
+    desc: 'AWS Signature v4 presigned tokens stream binaries directly from browsers to S3, bypassing server CPU loops.',
+  },
+  {
+    title: 'PostgreSQL WAL Logical Decoding',
+    tag: 'CDC Streaming',
+    desc: 'Change Data Capture decodes database transaction logs and dispatches mutations over WebSockets in sub-15ms.',
+  },
+  {
+    title: 'AI Schema Drift Guardrails',
+    tag: 'AI Infrastructure',
+    desc: 'Pre-flight introspection and public key DDL lockdowns prevent Cursor and Claude Code from generating breaking migrations.',
+  },
+  {
+    title: 'Dual ESM & CJS TypeScript SDK',
+    tag: 'Developer Experience',
+    desc: 'Zero external runtime dependencies. Tree-shakeable query builders with comprehensive TypeScript declaration maps.',
+  },
+  {
+    title: 'Stateless Horizontal Scaling',
+    tag: 'Control Plane',
+    desc: 'Stateless API replicas multiplex 10,000+ client requests into pooled database workers using PgBouncer.',
+  },
+]
+
+const faqItems = [
+  {
+    q: 'How does Zorabase compare to Firebase or Supabase?',
+    a: 'Firebase forces proprietary NoSQL documents that lack relational integrity and become prohibitively expensive at scale. Supabase provides raw PostgreSQL but requires complex manual configuration for S3 presigning and AI prompts. Zorabase delivers turnkey schema isolation, direct S3 presigned storage (0 server bandwidth), sub-15ms CDC WebSockets, and 1-click prompts tailored for AI coding agents.',
+  },
+  {
+    q: 'Why use Presigned S3 URLs instead of streaming files through the API?',
+    a: 'Streaming files through a Node.js web server consumes 200MB of network transit for a 100MB file (100MB in, 100MB out) and blocks worker threads. With AWS Presigned URLs, Zorabase generates an HMAC-SHA256 signature in < 2ms, and the client streams directly to Amazon S3 with zero server memory overhead.',
+  },
+  {
+    q: 'How do you prevent SQL Injection and unauthorized mutations?',
+    a: 'The SDK does not accept raw SQL from client apps. It uses a chainable QueryBuilder that transforms operations into parameterized PostgreSQL queries ($1, $2). Public keys (pk_live_...) are strictly restricted from executing DDL statements (DROP TABLE, ALTER TABLE).',
+  },
+  {
+    q: 'Can I connect autonomous AI coding agents like Cursor or Claude Code?',
+    a: 'Yes! Zorabase provides a 1-click AI setup prompt that introspects your database schemas, tables, and storage buckets, allowing AI coding tools to integrate queries directly without hallucinations or schema drift.',
+  },
+]
+
 export default function LandingPage() {
   const [activeCodeTab, setActiveCodeTab] = useState('database')
   const [copiedKeycap, setCopiedKeycap] = useState(false)
   const [copiedCode, setCopiedCode] = useState(false)
+  const [openFaq, setOpenFaq] = useState<number | null>(0)
 
   function handleCopyKeycap() {
     navigator.clipboard.writeText('pnpm add @zorabase/sdk')
@@ -105,33 +154,34 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#030303] text-zinc-100 selection:bg-indigo-500/30 selection:text-indigo-200 relative overflow-hidden">
-      {/* Background Subtle Grid & Ambient Glows */}
+    <div className="min-h-screen bg-[#030303] text-zinc-100 selection:bg-indigo-500/30 selection:text-indigo-200 relative overflow-hidden font-sans">
+      {/* Subtle Background Mesh & Radial Ambient Accents */}
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:28px_28px] opacity-40" />
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-indigo-600/[0.07] blur-[140px] pointer-events-none" />
       <div className="fixed top-1/3 left-1/4 w-[450px] h-[450px] bg-purple-600/[0.04] blur-[120px] pointer-events-none" />
 
-      {/* ─── A. Centered Minimalist Navigation Bar ─── */}
+      {/* ─── 1. Fixed Floating Frosted Header ─── */}
       <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#09090b]/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative">
-          {/* Left Brand Logo */}
+          {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
             <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white text-sm shadow-[0_0_20px_rgba(99,102,241,0.4)] group-hover:scale-105 transition-transform">
               Z
             </div>
-            <span className="font-gloock text-lg tracking-tight text-white">Zorabase</span>
+            <span className="font-elsie font-black text-xl tracking-tight text-white">Zorabase</span>
           </Link>
 
-          {/* Mathematically Dead-Centered Nav Links */}
+          {/* Mathematically Dead-Centered Navigation */}
           <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-zinc-400 absolute left-1/2 -translate-x-1/2 pointer-events-auto">
             <a href="#how-it-works" className="hover:text-zinc-100 transition-colors">How it Works</a>
+            <a href="#guardrails" className="hover:text-zinc-100 transition-colors">AI Guardrails</a>
             <a href="#architecture" className="hover:text-zinc-100 transition-colors">Architecture</a>
-            <a href="#benchmarks" className="hover:text-zinc-100 transition-colors">Benchmarks</a>
-            <a href="#sdk" className="hover:text-zinc-100 transition-colors">TypeScript SDK</a>
-            <Link href="/dashboard/docs" className="hover:text-zinc-100 transition-colors">API Docs</Link>
+            <a href="#sdk" className="hover:text-zinc-100 transition-colors">SDK</a>
+            <a href="#faq" className="hover:text-zinc-100 transition-colors">FAQ</a>
+            <Link href="/dashboard/docs" className="hover:text-zinc-100 transition-colors">Docs</Link>
           </nav>
 
-          {/* Right Action Group */}
+          {/* Right Actions */}
           <div className="flex items-center gap-3">
             <Link
               href="/login"
@@ -149,19 +199,19 @@ export default function LandingPage() {
         </div>
       </header>
 
-      <main className="relative max-w-7xl mx-auto px-6 pt-20 pb-28 space-y-36">
-        {/* ─── Hero Section ─── */}
+      <main className="relative max-w-7xl mx-auto px-6 pt-16 pb-28 space-y-36">
+        {/* ─── 2. Hero Section ─── */}
         <section className="text-center max-w-4xl mx-auto space-y-8 pt-4">
-          {/* Tactical Category Badge */}
+          {/* Tactical Status Pill */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] text-[11px] font-semibold uppercase tracking-wider text-emerald-400">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span>Zero-Bandwidth S3 · Sub-15ms CDC Replication</span>
           </div>
 
-          {/* Editorial Headline with Gloock & Italics */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-normal text-white font-gloock tracking-tight leading-[1.08]">
-            #1 Backend Engine<br />
-            for <em className="italic font-normal">Modern Apps &amp; AI Agents</em>
+          {/* Editorial Display Headline with Elsie */}
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-white font-elsie tracking-tight leading-[1.08]">
+            #1 Unified Backend Engine<br />
+            for <em className="italic font-normal font-gloock text-indigo-300">Modern Apps &amp; AI Agents</em>
           </h1>
 
           <p className="text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed">
@@ -195,13 +245,11 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── Infinite Marquee Trust Carousel ─── */}
+        {/* ─── 3. Infinite Marquee Trust Carousel ─── */}
         <section className="relative overflow-hidden py-4 border-y border-white/[0.06] bg-[#070709]/50">
-          {/* Left and Right Vignette Masks */}
           <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#030303] via-[#030303]/90 to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#030303] via-[#030303]/90 to-transparent z-10 pointer-events-none" />
 
-          {/* 3x Repetition Track for Seamless Infinite Scrolling */}
           <div className="trust-marquee-track flex items-center gap-8">
             {[...trustTechs, ...trustTechs, ...trustTechs].map((tech, idx) => (
               <div
@@ -215,11 +263,31 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── B. Bento Card Grid (`#how-it-works`) ─── */}
+        {/* ─── 4. Live Benchmarks Metrics Bar ─── */}
+        <section id="benchmarks" className="rounded-2xl border border-white/[0.08] bg-[#09090b] p-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div>
+            <div className="text-3xl sm:text-5xl font-black text-indigo-400 font-handjet">&lt; 15ms</div>
+            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">CDC Broadcast Latency</div>
+          </div>
+          <div>
+            <div className="text-3xl sm:text-5xl font-black text-emerald-400 font-handjet">5,000+ QPS</div>
+            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">Query Engine Capacity</div>
+          </div>
+          <div>
+            <div className="text-3xl sm:text-5xl font-black text-blue-400 font-handjet">0 MB</div>
+            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">Server Bandwidth on Uploads</div>
+          </div>
+          <div>
+            <div className="text-3xl sm:text-5xl font-black text-purple-400 font-handjet">10,000+</div>
+            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">WebSockets / Node</div>
+          </div>
+        </section>
+
+        {/* ─── 5. Core Subsystems Bento Grid (`#how-it-works`) ─── */}
         <section id="how-it-works" className="space-y-12">
           <div className="text-center max-w-xl mx-auto space-y-3">
-            <h2 className="text-3xl sm:text-4xl font-normal text-white font-gloock tracking-tight">
-              How Zorabase <em className="italic">works</em>
+            <h2 className="text-3xl sm:text-4xl font-black text-white font-elsie tracking-tight">
+              How Zorabase <em className="italic font-normal font-gloock">works</em>
             </h2>
             <p className="text-xs text-zinc-400 leading-relaxed">
               Three specialized subsystems engineered for maximum developer velocity and zero operational overhead.
@@ -308,31 +376,72 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── Benchmarks Metrics Bar ─── */}
-        <section id="benchmarks" className="rounded-2xl border border-white/[0.08] bg-[#09090b] p-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div>
-            <div className="text-2xl sm:text-4xl font-normal text-indigo-400 font-gloock">&lt; 15ms</div>
-            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">CDC Broadcast Latency</div>
+        {/* ─── 6. AI Schema Drift Comparison Section (`#guardrails`) ─── */}
+        <section id="guardrails" className="space-y-10">
+          <div className="text-center max-w-xl mx-auto space-y-3">
+            <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
+              Critical Problem Solved
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white font-elsie tracking-tight">
+              Eliminating AI Coding Agent <em className="italic font-normal font-gloock">Schema Drift</em>
+            </h2>
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              How Zorabase prevents autonomous AI coding tools from breaking your production database.
+            </p>
           </div>
-          <div>
-            <div className="text-2xl sm:text-4xl font-normal text-emerald-400 font-gloock">5,000+ QPS</div>
-            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">Query Engine Capacity</div>
-          </div>
-          <div>
-            <div className="text-2xl sm:text-4xl font-normal text-blue-400 font-gloock">0 MB</div>
-            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">Server Bandwidth on Uploads</div>
-          </div>
-          <div>
-            <div className="text-2xl sm:text-4xl font-normal text-purple-400 font-gloock">10,000+</div>
-            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">WebSockets / Node</div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Without Zorabase */}
+            <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.02] p-7 space-y-4">
+              <div className="flex items-center gap-2 text-red-400 font-semibold text-sm">
+                <span>❌</span>
+                <span>Traditional BaaS &amp; Raw PostgreSQL</span>
+              </div>
+              <ul className="space-y-3 text-xs text-zinc-400 leading-relaxed">
+                <li className="flex items-start gap-2">
+                  <span className="text-red-400">✕</span>
+                  <span>AI agents invent duplicate or colliding columns during automated refactoring tasks.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-red-400">✕</span>
+                  <span>Executing destructive DDL (<code className="text-zinc-300 font-mono">ALTER TABLE</code>) locks tables and crashes production traffic.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-red-400">✕</span>
+                  <span>Hardcoding server secret keys into frontend mobile bundles exposing full database access.</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* With Zorabase */}
+            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/[0.02] p-7 space-y-4">
+              <div className="flex items-center gap-2 text-emerald-400 font-semibold text-sm">
+                <span>✓</span>
+                <span>Zorabase 3-Tier Guardrail Protection</span>
+              </div>
+              <ul className="space-y-3 text-xs text-zinc-300 leading-relaxed">
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-400">✓</span>
+                  <span><strong className="text-zinc-100">Pre-Flight Schema Introspection:</strong> AI prompts enforce active column awareness before code generation.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-400">✓</span>
+                  <span><strong className="text-zinc-100">Public Key DDL Lockdown:</strong> Public client keys (<code className="text-zinc-200 font-mono">pk_live_...</code>) are cryptographically blocked from DDL.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-400">✓</span>
+                  <span><strong className="text-zinc-100">Zero-Downtime JSONB Records:</strong> Dynamic column attributes are indexed without locking database tables.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
-        {/* ─── Interactive Code & SDK Showcase ─── */}
+        {/* ─── 7. Interactive Architecture & Code Studio (`#sdk`) ─── */}
         <section id="sdk" className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-normal text-white font-gloock tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-black text-white font-elsie tracking-tight">
                 Official TypeScript SDK (<code className="text-indigo-400 font-mono text-xl">@zorabase/sdk</code>)
               </h2>
               <p className="text-xs text-zinc-400 mt-1">
@@ -340,7 +449,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* Interactive Tab Selectors */}
+            {/* Tab Selectors */}
             <div className="flex items-center gap-1 bg-[#09090b] border border-white/[0.08] p-1 rounded-xl">
               {Object.keys(codeSnippets).map((key) => (
                 <button
@@ -358,7 +467,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Simulated Dark Terminal Container */}
+          {/* Dark Code Terminal */}
           <div className="rounded-2xl border border-white/[0.08] bg-[#09090b] overflow-hidden shadow-2xl">
             <div className="flex items-center justify-between px-5 py-3 bg-[#060608] border-b border-white/[0.06] text-xs font-mono text-zinc-500">
               <div className="flex items-center gap-2">
@@ -385,14 +494,78 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── D. High-Contrast Light Theme Conversion Card ─── */}
+        {/* ─── 8. Technical Capability Matrix (6-Card Grid) ─── */}
+        <section id="architecture" className="space-y-10">
+          <div className="text-center max-w-xl mx-auto space-y-3">
+            <h2 className="text-3xl sm:text-4xl font-black text-white font-elsie tracking-tight">
+              Engineered for <em className="italic font-normal font-gloock">Enterprise Reliability</em>
+            </h2>
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              Every architectural layer is designed for deterministic latency, zero downtime, and strict multi-tenant isolation.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuresGrid.map((f) => (
+              <div
+                key={f.title}
+                className="rounded-2xl border border-white/[0.08] bg-[#09090b] p-6 space-y-3 hover:border-white/[0.15] transition-all"
+              >
+                <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded">
+                  {f.tag}
+                </span>
+                <h3 className="text-sm font-semibold text-zinc-100">{f.title}</h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ─── 9. Developer FAQ Accordion (`#faq`) ─── */}
+        <section id="faq" className="space-y-10 max-w-3xl mx-auto">
+          <div className="text-center space-y-3">
+            <h2 className="text-3xl sm:text-4xl font-black text-white font-elsie tracking-tight">
+              Frequently Asked <em className="italic font-normal font-gloock">Questions</em>
+            </h2>
+            <p className="text-xs text-zinc-400">
+              Clear answers to the most common architectural and technical questions.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {faqItems.map((item, idx) => {
+              const isOpen = openFaq === idx
+              return (
+                <div
+                  key={item.q}
+                  className="rounded-xl border border-white/[0.08] bg-[#09090b] overflow-hidden transition-all"
+                >
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : idx)}
+                    className="w-full px-6 py-4 text-left flex items-center justify-between text-xs font-semibold text-zinc-200 hover:text-white"
+                  >
+                    <span>{item.q}</span>
+                    <span className="text-zinc-500 text-base">{isOpen ? '−' : '+'}</span>
+                  </button>
+                  {isOpen && (
+                    <div className="px-6 pb-5 text-xs text-zinc-400 leading-relaxed border-t border-white/[0.04] pt-3">
+                      {item.a}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </section>
+
+        {/* ─── 10. High-Contrast Luxury Light Conversion Section ─── */}
         <section className="rounded-3xl bg-white text-zinc-900 p-8 sm:p-14 shadow-2xl space-y-6">
           <div className="max-w-2xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-[11px] font-semibold text-indigo-600 uppercase tracking-wider">
               <span>Instant Cloud Provisioning</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-normal text-zinc-900 font-gloock tracking-tight leading-tight">
-              Ready to ship without <em className="italic">backend friction?</em>
+            <h2 className="text-3xl sm:text-5xl font-black text-zinc-900 font-elsie tracking-tight leading-tight">
+              Ready to ship without <em className="italic font-normal font-gloock">backend friction?</em>
             </h2>
             <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
               Create a project in 10 seconds, copy your AI agent setup prompt, and build full-stack applications with PostgreSQL, S3, and WebSockets.
@@ -423,13 +596,13 @@ export default function LandingPage() {
           </p>
         </section>
 
-        {/* ─── E. Giant Brand Watermark ─── */}
+        {/* ─── 11. Giant Brand Watermark ─── */}
         <div className="flex justify-center -mb-20 overflow-hidden select-none pointer-events-none">
-          <span className="brand-watermark-text">ZORABASE</span>
+          <span className="brand-watermark-text font-elsie">ZORABASE</span>
         </div>
       </main>
 
-      {/* ─── Minimalist Footer ─── */}
+      {/* ─── 12. Minimalist Footer ─── */}
       <footer className="border-t border-white/[0.08] bg-[#09090b] py-8 text-center text-xs text-zinc-500">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">

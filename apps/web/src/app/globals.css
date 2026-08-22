@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Gloock&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Elsie:wght@400;900&family=Gloock&family=Handjet:wght,ELSH@100..900,2&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -24,7 +24,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Lato', sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
@@ -32,8 +32,16 @@ body {
   overflow-x: hidden;
 }
 
+.font-elsie {
+  font-family: 'Elsie', cursive, Georgia, serif;
+}
+
 .font-gloock {
   font-family: 'Gloock', Georgia, serif;
+}
+
+.font-handjet {
+  font-family: 'Handjet', monospace;
 }
 
 .font-mono {
@@ -81,7 +89,7 @@ body {
 
 /* ─── Watermark ─── */
 .brand-watermark-text {
-  font-family: 'Gloock', Georgia, serif;
+  font-family: 'Elsie', 'Gloock', Georgia, serif;
   font-size: clamp(70px, 16vw, 220px);
   color: #ffffff;
   opacity: 0.03;
