@@ -1,7 +1,7 @@
 {
   "name": "@zorabase/sdk",
   "version": "0.1.0",
-  "description": "Official TypeScript SDK for Zorabase Backend-as-a-Service",
+  "description": "Official TypeScript SDK for Zorabase Backend Engine (PostgreSQL, Direct AWS S3 SigV4, Sub-15ms CDC WebSockets, Gemini AI)",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -12,12 +12,42 @@
       "require": "./dist/index.js"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build"
   },
-  "keywords": ["zorabase", "baas", "database", "storage", "auth", "realtime", "sdk"],
+  "keywords": [
+    "zorabase",
+    "baas",
+    "database",
+    "postgresql",
+    "s3",
+    "aws",
+    "realtime",
+    "cdc",
+    "websockets",
+    "gemini",
+    "sdk",
+    "typescript"
+  ],
+  "author": "Omkar Hundre",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Omkar-Hundre/Zorabase.git",
+    "directory": "packages/sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/Omkar-Hundre/Zorabase/issues"
+  },
+  "homepage": "https://github.com/Omkar-Hundre/Zorabase#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "tsup": "^8.3.5",
     "typescript": "^5.7.3"

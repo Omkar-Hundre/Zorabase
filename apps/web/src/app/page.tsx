@@ -169,34 +169,34 @@ export default function LandingPage() {
       {/* ─── Fixed Minimal Floating Navigation ─── */}
       <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#030303]/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative">
-          {/* Brand Logo in crisp digital Space Grotesk */}
+          {/* Brand Logo in Roboto Slab */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white text-sm shadow-[0_0_20px_rgba(99,102,241,0.4)] group-hover:scale-105 transition-transform font-display">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white text-sm shadow-[0_0_20px_rgba(99,102,241,0.4)] group-hover:scale-105 transition-transform font-slab">
               Z
             </div>
-            <span className="font-display text-lg font-bold tracking-tight text-white">Zorabase</span>
+            <span className="font-slab text-xl font-bold tracking-tight text-white">Zorabase</span>
           </Link>
 
           {/* Centered Navigation Links */}
           <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-zinc-400 absolute left-1/2 -translate-x-1/2 pointer-events-auto">
-            <a href="#how-it-works" className="hover:text-zinc-100 transition-colors">Architecture</a>
-            <a href="#benchmarks" className="hover:text-zinc-100 transition-colors">Benchmarks</a>
-            <a href="#sdk" className="hover:text-zinc-100 transition-colors">SDK</a>
-            <a href="#faq" className="hover:text-zinc-100 transition-colors">FAQ</a>
-            <Link href="/dashboard/docs" className="hover:text-zinc-100 transition-colors">Docs</Link>
+            <a href="#how-it-works" className="hover:text-zinc-100 transition-colors font-condensed uppercase tracking-wider text-sm">Architecture</a>
+            <a href="#benchmarks" className="hover:text-zinc-100 transition-colors font-condensed uppercase tracking-wider text-sm">Benchmarks</a>
+            <a href="#sdk" className="hover:text-zinc-100 transition-colors font-condensed uppercase tracking-wider text-sm">SDK</a>
+            <a href="#faq" className="hover:text-zinc-100 transition-colors font-condensed uppercase tracking-wider text-sm">FAQ</a>
+            <Link href="/dashboard/docs" className="hover:text-zinc-100 transition-colors font-condensed uppercase tracking-wider text-sm">Docs</Link>
           </nav>
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="text-xs font-medium text-zinc-300 hover:text-white px-3 py-1.5 rounded-lg transition-colors"
+              className="text-xs font-medium text-zinc-300 hover:text-white px-3 py-1.5 rounded-lg transition-colors font-condensed uppercase tracking-wider"
             >
               Sign In
             </Link>
             <Link
               href="/register"
-              className="text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 px-3.5 py-1.5 rounded-lg transition-all shadow-[0_0_15px_rgba(99,102,241,0.3)] hover:shadow-[0_0_25px_rgba(99,102,241,0.5)] font-display"
+              className="text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 px-3.5 py-1.5 rounded-lg transition-all shadow-[0_0_15px_rgba(99,102,241,0.3)] hover:shadow-[0_0_25px_rgba(99,102,241,0.5)] font-condensed uppercase tracking-wider"
             >
               Get Started →
             </Link>
@@ -208,20 +208,20 @@ export default function LandingPage() {
         {/* ─── Hero Section ─── */}
         <section className="text-center max-w-4xl mx-auto space-y-8 pt-8">
           {/* Tactical Status Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] text-[11px] font-semibold tracking-wide text-emerald-400 font-mono">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] text-[11px] font-semibold uppercase tracking-wider text-emerald-400 font-condensed">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span>Sub-15ms CDC Replication · Zero-Bandwidth S3</span>
           </div>
 
-          {/* Editorial Display Headline with Space Grotesk */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white font-display tracking-tight leading-[1.08]">
+          {/* Editorial Display Headline with Roboto Slab */}
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white font-slab tracking-tight leading-[1.08]">
             #1 Unified Backend Engine<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-indigo-300">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-indigo-300 font-slab font-normal italic">
               for Modern Apps &amp; AI Agents
             </span>
           </h1>
 
-          <p className="text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto leading-relaxed font-light">
             Schema-isolated PostgreSQL tables, direct AWS S3 presigned object uploads, zero-latency CDC WebSocket streams, and native Gemini GenAI intelligence in a single TypeScript SDK.
           </p>
 
@@ -242,7 +242,7 @@ export default function LandingPage() {
 
             <Link
               href="/register"
-              className="h-10 px-6 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition-all shadow-[0_0_25px_rgba(99,102,241,0.35)] flex items-center justify-center gap-2 font-display"
+              className="h-10 px-6 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white transition-all shadow-[0_0_25px_rgba(99,102,241,0.35)] flex items-center justify-center gap-2 font-condensed uppercase tracking-wider"
             >
               <span>Start Building Free</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -270,33 +270,33 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── Live Benchmarks Metrics Bar in Crisp Digital Style ─── */}
+        {/* ─── Live Benchmarks Metrics Bar in Roboto Condensed ─── */}
         <section id="benchmarks" className="rounded-2xl border border-white/[0.08] bg-[#09090b]/80 backdrop-blur-md p-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div>
-            <div className="text-3xl sm:text-5xl font-bold text-indigo-400 font-display">&lt; 15ms</div>
-            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">CDC Broadcast Latency</div>
+            <div className="text-3xl sm:text-5xl font-black text-indigo-400 font-condensed tracking-tight">&lt; 15ms</div>
+            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-condensed font-semibold">CDC Broadcast Latency</div>
           </div>
           <div>
-            <div className="text-3xl sm:text-5xl font-bold text-emerald-400 font-display">5,000+ QPS</div>
-            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">Query Engine Capacity</div>
+            <div className="text-3xl sm:text-5xl font-black text-emerald-400 font-condensed tracking-tight">5,000+ QPS</div>
+            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-condensed font-semibold">Query Engine Capacity</div>
           </div>
           <div>
-            <div className="text-3xl sm:text-5xl font-bold text-blue-400 font-display">0 MB</div>
-            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">Server Bandwidth on Uploads</div>
+            <div className="text-3xl sm:text-5xl font-black text-blue-400 font-condensed tracking-tight">0 MB</div>
+            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-condensed font-semibold">Server Bandwidth on Uploads</div>
           </div>
           <div>
-            <div className="text-3xl sm:text-5xl font-bold text-purple-400 font-display">10,000+</div>
-            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">WebSockets / Node</div>
+            <div className="text-3xl sm:text-5xl font-black text-purple-400 font-condensed tracking-tight">10,000+</div>
+            <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-condensed font-semibold">WebSockets / Node</div>
           </div>
         </section>
 
         {/* ─── Architectural Line-Divided Deep Dive (No Box Slop) ─── */}
         <section id="how-it-works" className="space-y-12">
           <div className="text-center max-w-xl mx-auto space-y-3">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white font-display tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white font-slab tracking-tight">
               Architectural Subsystems
             </h2>
-            <p className="text-xs text-zinc-400 leading-relaxed">
+            <p className="text-xs text-zinc-400 leading-relaxed font-light">
               Four specialized subsystems engineered for maximum developer velocity, zero bandwidth waste, and predictable latencies.
             </p>
           </div>
@@ -309,18 +309,18 @@ export default function LandingPage() {
               >
                 <div className="lg:col-span-4 space-y-2">
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-xl font-bold text-indigo-400">{p.number}</span>
-                    <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-400 bg-white/[0.04] border border-white/[0.06] px-2.5 py-0.5 rounded">
+                    <span className="font-condensed text-2xl font-bold text-indigo-400">{p.number}</span>
+                    <span className="text-[10px] font-condensed font-semibold uppercase tracking-wider text-zinc-400 bg-white/[0.04] border border-white/[0.06] px-2.5 py-0.5 rounded">
                       {p.category}
                     </span>
                   </div>
-                  <h3 className="text-base sm:text-lg font-semibold text-zinc-100 group-hover:text-indigo-200 transition-colors font-display">
+                  <h3 className="text-base sm:text-lg font-semibold text-zinc-100 group-hover:text-indigo-200 transition-colors font-slab">
                     {p.title}
                   </h3>
                 </div>
 
                 <div className="lg:col-span-8">
-                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-light">
                     {p.desc}
                   </p>
                 </div>
@@ -333,10 +333,10 @@ export default function LandingPage() {
         <section id="sdk" className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-white font-display tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white font-slab tracking-tight">
                 Official TypeScript SDK (<code className="text-indigo-400 font-mono text-xl">@zorabase/sdk</code>)
               </h2>
-              <p className="text-xs text-zinc-400 mt-1">
+              <p className="text-xs text-zinc-400 mt-1 font-light">
                 Zero external dependencies. Dual ESM and CommonJS bundles with full TypeScript declaration maps.
               </p>
             </div>
@@ -347,9 +347,9 @@ export default function LandingPage() {
                 <button
                   key={key}
                   onClick={() => setActiveCodeTab(key)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all capitalize ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all capitalize font-condensed uppercase tracking-wider ${
                     activeCodeTab === key
-                      ? 'bg-indigo-600 text-white font-semibold shadow-sm font-display'
+                      ? 'bg-indigo-600 text-white font-bold shadow-sm'
                       : 'text-zinc-400 hover:text-zinc-200'
                   }`}
                 >
@@ -370,7 +370,7 @@ export default function LandingPage() {
               </div>
               
               <div className="flex items-center gap-3">
-                <span className="text-[11px] text-indigo-400 font-semibold font-mono uppercase tracking-wider">{codeSnippets[activeCodeTab].title}</span>
+                <span className="text-[11px] text-indigo-400 font-semibold font-condensed uppercase tracking-wider">{codeSnippets[activeCodeTab].title}</span>
                 <button
                   onClick={handleCopyCode}
                   className="px-2.5 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] text-[11px] text-zinc-300 font-mono transition-colors"
@@ -380,7 +380,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="p-4 bg-[#08080a] border-b border-white/[0.04] text-xs text-zinc-400">
+            <div className="p-4 bg-[#08080a] border-b border-white/[0.04] text-xs text-zinc-400 font-light">
               {codeSnippets[activeCodeTab].summary}
             </div>
 
@@ -393,10 +393,10 @@ export default function LandingPage() {
         {/* ─── Developer FAQ Accordion (`#faq`) ─── */}
         <section id="faq" className="space-y-10 max-w-3xl mx-auto">
           <div className="text-center space-y-3">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white font-display tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white font-slab tracking-tight">
               Frequently Asked Questions
             </h2>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-zinc-400 font-light">
               Straightforward answers to core architectural and operational questions.
             </p>
           </div>
@@ -413,11 +413,11 @@ export default function LandingPage() {
                     onClick={() => setOpenFaq(isOpen ? null : idx)}
                     className="w-full px-6 py-4 text-left flex items-center justify-between text-xs font-semibold text-zinc-200 hover:text-white"
                   >
-                    <span className="font-display text-sm">{item.q}</span>
+                    <span className="font-slab text-sm">{item.q}</span>
                     <span className="text-zinc-500 text-base font-mono">{isOpen ? '−' : '+'}</span>
                   </button>
                   {isOpen && (
-                    <div className="px-6 pb-5 text-xs text-zinc-400 leading-relaxed border-t border-white/[0.04] pt-3">
+                    <div className="px-6 pb-5 text-xs text-zinc-400 leading-relaxed border-t border-white/[0.04] pt-3 font-light">
                       {item.a}
                     </div>
                   )}
@@ -431,13 +431,13 @@ export default function LandingPage() {
         <section className="rounded-3xl border border-white/[0.08] bg-[#09090b] p-8 sm:p-14 shadow-2xl space-y-6 relative overflow-hidden">
           <div className="absolute -top-32 -right-32 w-64 h-64 bg-indigo-600/[0.12] rounded-full blur-3xl pointer-events-none" />
           <div className="max-w-2xl space-y-3 relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[11px] font-semibold text-indigo-400 tracking-wider font-mono uppercase">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[11px] font-semibold text-indigo-400 tracking-wider font-condensed uppercase">
               <span>Instant Cloud Provisioning</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-bold text-white font-display tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-slab tracking-tight leading-tight">
               Ready to ship without backend friction?
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-light">
               Create a project in 10 seconds, copy your AI agent setup prompt, and build full-stack applications with PostgreSQL, S3, and WebSockets.
             </p>
           </div>
@@ -445,7 +445,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 relative z-10">
             <Link
               href="/register"
-              className="w-full sm:w-auto h-11 px-7 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition-all shadow-[0_0_20px_rgba(99,102,241,0.35)] flex items-center justify-center gap-2 font-display"
+              className="w-full sm:w-auto h-11 px-7 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white transition-all shadow-[0_0_20px_rgba(99,102,241,0.35)] flex items-center justify-center gap-2 font-condensed uppercase tracking-wider"
             >
               <span>Get Started Free</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -455,7 +455,7 @@ export default function LandingPage() {
 
             <Link
               href="/dashboard/docs"
-              className="w-full sm:w-auto h-11 px-6 rounded-xl border border-white/[0.08] hover:bg-white/[0.04] text-xs font-semibold text-zinc-300 transition-colors flex items-center justify-center font-display"
+              className="w-full sm:w-auto h-11 px-6 rounded-xl border border-white/[0.08] hover:bg-white/[0.04] text-xs font-semibold text-zinc-300 transition-colors flex items-center justify-center font-condensed uppercase tracking-wider"
             >
               Read Docs
             </Link>
@@ -466,9 +466,9 @@ export default function LandingPage() {
           </p>
         </section>
 
-        {/* ─── Giant Brand Watermark in Crisp Space Grotesk ─── */}
+        {/* ─── Giant Brand Watermark in Roboto Slab ─── */}
         <div className="flex justify-center -mb-20 overflow-hidden select-none pointer-events-none">
-          <span className="brand-watermark-text font-display">ZORABASE</span>
+          <span className="brand-watermark-text font-slab">ZORABASE</span>
         </div>
       </main>
 
@@ -477,9 +477,9 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            <span className="font-mono text-zinc-400">All systems operational · v1.0.0</span>
+            <span className="font-condensed uppercase tracking-wider text-zinc-400">All systems operational · v1.0.0</span>
           </div>
-          <p>© {new Date().getFullYear()} Zorabase Cloud Infrastructure. Engineered for modern developers &amp; AI agents.</p>
+          <p className="font-light">© {new Date().getFullYear()} Zorabase Cloud Infrastructure. Engineered for modern developers &amp; AI agents.</p>
         </div>
       </footer>
     </div>
