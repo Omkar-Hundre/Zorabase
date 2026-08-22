@@ -179,8 +179,7 @@ export default function LandingPage() {
 
           {/* Centered Navigation Links */}
           <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-zinc-400 absolute left-1/2 -translate-x-1/2 pointer-events-auto">
-            <a href="#how-it-works" className="hover:text-zinc-100 transition-colors">How it Works</a>
-            <a href="#architecture" className="hover:text-zinc-100 transition-colors">Architecture</a>
+            <a href="#how-it-works" className="hover:text-zinc-100 transition-colors">Architecture</a>
             <a href="#benchmarks" className="hover:text-zinc-100 transition-colors">Benchmarks</a>
             <a href="#sdk" className="hover:text-zinc-100 transition-colors">SDK</a>
             <a href="#faq" className="hover:text-zinc-100 transition-colors">FAQ</a>
@@ -234,7 +233,7 @@ export default function LandingPage() {
               <kbd className="tactile-key">pnpm</kbd>
               <kbd className="tactile-key">add</kbd>
               <kbd className="tactile-key text-indigo-300">@zorabase/sdk</kbd>
-              <span className="text-[11px] text-zinc-500 group-hover:text-zinc-300 font-mono ml-2">
+              <span className="text-[11px] text-zinc-400 group-hover:text-zinc-200 font-mono ml-2">
                 {copiedKeycap ? '✓ Copied' : '📋'}
               </span>
             </button>
@@ -243,7 +242,7 @@ export default function LandingPage() {
               href="/register"
               className="h-10 px-6 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition-all shadow-[0_0_25px_rgba(99,102,241,0.35)] flex items-center justify-center gap-2"
             >
-              <span>Create Project Free</span>
+              <span>Start Building Free</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
@@ -293,7 +292,7 @@ export default function LandingPage() {
         <section id="how-it-works" className="space-y-12">
           <div className="text-center max-w-xl mx-auto space-y-3">
             <h2 className="text-3xl sm:text-4xl font-black text-white font-elsie tracking-tight">
-              How Zorabase <em className="italic font-normal font-gloock">works</em>
+              Architectural <em className="italic font-normal font-gloock">Subsystems</em>
             </h2>
             <p className="text-xs text-zinc-400 leading-relaxed">
               Four specialized subsystems engineered for maximum developer velocity, zero bandwidth waste, and predictable latencies.
@@ -358,7 +357,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Dark Code Terminal */}
+          {/* Dark Code Terminal Container */}
           <div className="rounded-2xl border border-white/[0.08] bg-[#09090b] overflow-hidden shadow-2xl">
             <div className="flex items-center justify-between px-5 py-3 bg-[#060608] border-b border-white/[0.06] text-xs font-mono text-zinc-500">
               <div className="flex items-center gap-2">
@@ -396,7 +395,7 @@ export default function LandingPage() {
               Frequently Asked <em className="italic font-normal font-gloock">Questions</em>
             </h2>
             <p className="text-xs text-zinc-400">
-              Clear answers to the most common architectural and technical questions.
+              Straightforward answers to core architectural and operational questions.
             </p>
           </div>
 
