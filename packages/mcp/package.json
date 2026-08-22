@@ -1,0 +1,52 @@
+{
+  "name": "@zorabase/mcp",
+  "version": "0.1.0",
+  "description": "Official Model Context Protocol (MCP) server for Zorabase — connect Cursor, Claude, and any AI agent to your Zorabase project",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "zorabase-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs --dts --no-splitting",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "zorabase",
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "cursor",
+    "claude",
+    "postgresql",
+    "database",
+    "baas"
+  ],
+  "author": "Omkar Hundre",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Omkar-Hundre/Zorabase.git",
+    "directory": "packages/mcp"
+  },
+  "bugs": {
+    "url": "https://github.com/Omkar-Hundre/Zorabase/issues"
+  },
+  "homepage": "https://github.com/Omkar-Hundre/Zorabase#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3"
+  }
+}
