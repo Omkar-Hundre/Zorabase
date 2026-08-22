@@ -3,10 +3,11 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
-const codeSnippets: Record<string, { title: string; filename: string; code: string }> = {
+const codeSnippets: Record<string, { title: string; filename: string; code: string; summary: string }> = {
   database: {
     title: 'Relational Query Engine',
-    filename: 'query.ts',
+    filename: 'database.ts',
+    summary: 'Schema-isolated PostgreSQL tables with typed columns, JSONB flexibility, and parameterized queries.',
     code: `import { createClient } from '@zorabase/sdk'
 
 export const db = createClient({
@@ -14,7 +15,7 @@ export const db = createClient({
   apiKey: process.env.NEXT_PUBLIC_ZORABASE_KEY!,
 })
 
-// Parameterized query with strict column typing
+// Type-safe query with parameterized filters ($1, $2)
 const { data: users, error } = await db
   .from('users')
   .select('id, name, email, plan, credits')
@@ -24,10 +25,11 @@ const { data: users, error } = await db
   .limit(25)`,
   },
   storage: {
-    title: 'Direct S3 Presigned Upload',
-    filename: 'upload.ts',
-    code: `// Direct browser-to-S3 binary streaming (eu-north-1)
-// Bypasses API server CPU & bandwidth completely
+    title: 'Direct S3 Presigned Uploads',
+    filename: 'storage.ts',
+    summary: 'Direct browser-to-S3 binary streaming via AWS Signature v4. Bypasses API server bandwidth entirely.',
+    code: `// Stream files directly to AWS S3 (eu-north-1)
+// Consumes 0 MB of web server bandwidth
 const file = event.target.files[0]
 
 const { data: ref, error } = await db.storage
@@ -36,34 +38,35 @@ const { data: ref, error } = await db.storage
     contentType: file.type,
   })
 
-// Generate time-limited AWS SigV4 signed URL
+// Generate time-limited AWS SigV4 signed download URL
 const { data: signed } = await db.storage
   .from('documents')
   .createSignedUrl(ref.key, 3600)`,
   },
   realtime: {
     title: 'Realtime CDC Replication',
-    filename: 'stream.ts',
-    code: `// Sub-15ms PostgreSQL Write-Ahead Log (WAL) streaming
+    filename: 'realtime.ts',
+    summary: 'Sub-15ms live streaming powered by PostgreSQL Write-Ahead Log (WAL) logical decoding.',
+    code: `// Subscribe to live PostgreSQL database mutations
 const channel = db
   .channel('orders')
   .on('INSERT', (payload) => {
-    console.log('⚡ New order received:', payload.new)
+    console.log('⚡ New order committed to Postgres:', payload.new)
   })
   .on('UPDATE', (payload) => {
-    console.log('🔄 Order status updated:', payload.new)
+    console.log('🔄 Order status updated in real time:', payload.new)
   })
   .subscribe()`,
   },
   ai: {
-    title: 'Gemini GenAI Database Analyst',
+    title: 'Gemini GenAI Schema Analyst',
     filename: 'analyst.ts',
-    code: `// Natural language querying with automated schema introspection
-// Generates persistent live widgets for your dashboard
+    summary: 'Natural language querying over relational records with 1-click live pinned dashboard widgets.',
+    code: `// Natural language SQL querying with automated schema introspection
 const analysis = await db.ai.query({
   table: 'orders',
   prompt: 'Calculate total revenue from active subscriptions this week',
-  pinAsCard: true, // Automatically pins live insight widget
+  pinAsCard: true, // Automatically pins live insight widget to dashboard
 })`,
   },
 }
@@ -83,43 +86,37 @@ const trustTechs = [
   'Tailwind CSS',
 ]
 
-const featuresGrid = [
+const architecturalPillars = [
   {
-    title: 'Row-Level Security (RLS)',
-    tag: 'Security Engine',
-    desc: 'PostgreSQL policies enforce strict multi-tenant isolation. Public keys cannot cross project or user boundaries.',
+    number: '01',
+    title: 'Relational Integrity without DDL Locks',
+    category: 'Database Engine',
+    desc: 'Each project operates within a schema-isolated PostgreSQL workspace. Dynamic table columns are indexed inside JSONB documents with GIN indexes, guaranteeing zero downtime and no migration locks during high-traffic writes.',
   },
   {
-    title: 'Zero-Server Bandwidth Uploads',
-    tag: 'Object Storage',
-    desc: 'AWS Signature v4 presigned tokens stream binaries directly from browsers to S3, bypassing server CPU loops.',
+    number: '02',
+    title: 'Direct S3 Presigned Upload Architecture',
+    category: 'Object Storage',
+    desc: 'Traditional API proxies force 200MB of network transit for a 100MB file. Zorabase generates cryptographically signed AWS Signature v4 tokens in under 2ms, allowing clients to stream directly to S3 with 0 MB server bandwidth load.',
   },
   {
-    title: 'PostgreSQL WAL Logical Decoding',
-    tag: 'CDC Streaming',
-    desc: 'Change Data Capture decodes database transaction logs and dispatches mutations over WebSockets in sub-15ms.',
+    number: '03',
+    title: 'Sub-15ms Change Data Capture (CDC)',
+    category: 'Realtime Streaming',
+    desc: 'Rather than running database polling loops, Zorabase attaches directly to the PostgreSQL Write-Ahead Log (WAL) logical replication publication, broadcasting live mutation events across connected WebSockets instantly.',
   },
   {
-    title: 'AI Schema Drift Guardrails',
-    tag: 'AI Infrastructure',
-    desc: 'Pre-flight introspection and public key DDL lockdowns prevent Cursor and Claude Code from generating breaking migrations.',
-  },
-  {
-    title: 'Dual ESM & CJS TypeScript SDK',
-    tag: 'Developer Experience',
-    desc: 'Zero external runtime dependencies. Tree-shakeable query builders with comprehensive TypeScript declaration maps.',
-  },
-  {
-    title: 'Stateless Horizontal Scaling',
-    tag: 'Control Plane',
-    desc: 'Stateless API replicas multiplex 10,000+ client requests into pooled database workers using PgBouncer.',
+    number: '04',
+    title: 'AI Coding Agent Schema Guardrails',
+    category: 'AI Infrastructure',
+    desc: 'Autonomous coding tools like Cursor and Claude Code often hallucinate columns and break production schemas. Zorabase enforces pre-flight schema introspection prompts and restricts public keys from executing destructive DDL.',
   },
 ]
 
 const faqItems = [
   {
     q: 'How does Zorabase compare to Firebase or Supabase?',
-    a: 'Firebase forces proprietary NoSQL documents that lack relational integrity and become prohibitively expensive at scale. Supabase provides raw PostgreSQL but requires complex manual configuration for S3 presigning and AI prompts. Zorabase delivers turnkey schema isolation, direct S3 presigned storage (0 server bandwidth), sub-15ms CDC WebSockets, and 1-click prompts tailored for AI coding agents.',
+    a: 'Firebase forces proprietary NoSQL documents that lack relational integrity and become expensive at scale. Supabase provides raw PostgreSQL but requires manual configuration for S3 presigning and AI prompts. Zorabase provides turnkey schema isolation, direct S3 presigned storage (0 server bandwidth), sub-15ms CDC WebSockets, and 1-click prompts tailored for AI coding agents.',
   },
   {
     q: 'Why use Presigned S3 URLs instead of streaming files through the API?',
@@ -155,13 +152,22 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#030303] text-zinc-100 selection:bg-indigo-500/30 selection:text-indigo-200 relative overflow-hidden font-sans">
-      {/* Subtle Background Mesh & Radial Ambient Accents */}
-      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:28px_28px] opacity-40" />
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-indigo-600/[0.07] blur-[140px] pointer-events-none" />
-      <div className="fixed top-1/3 left-1/4 w-[450px] h-[450px] bg-purple-600/[0.04] blur-[120px] pointer-events-none" />
+      {/* ─── Hero Nature Background with Smooth Dark Vignette Overlay ─── */}
+      <div className="absolute top-0 left-0 right-0 h-[680px] sm:h-[820px] overflow-hidden pointer-events-none z-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-luminosity scale-105 transition-transform duration-1000 ease-out"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1511497584788-87676104235f?q=80&w=2400&auto=format&fit=crop')`,
+          }}
+        />
+        {/* Multi-tier gradient overlay to seamlessly blend into obsidian void #030303 */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030303]/40 via-[#030303]/80 to-[#030303]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#030303] via-transparent to-[#030303]" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-indigo-600/[0.08] blur-[150px]" />
+      </div>
 
-      {/* ─── 1. Fixed Floating Frosted Header ─── */}
-      <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#09090b]/80 backdrop-blur-xl">
+      {/* ─── Fixed Minimal Floating Navigation ─── */}
+      <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#030303]/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
@@ -171,14 +177,14 @@ export default function LandingPage() {
             <span className="font-elsie font-black text-xl tracking-tight text-white">Zorabase</span>
           </Link>
 
-          {/* Mathematically Dead-Centered Navigation */}
+          {/* Centered Navigation Links */}
           <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-zinc-400 absolute left-1/2 -translate-x-1/2 pointer-events-auto">
             <a href="#how-it-works" className="hover:text-zinc-100 transition-colors">How it Works</a>
-            <a href="#guardrails" className="hover:text-zinc-100 transition-colors">AI Guardrails</a>
             <a href="#architecture" className="hover:text-zinc-100 transition-colors">Architecture</a>
+            <a href="#benchmarks" className="hover:text-zinc-100 transition-colors">Benchmarks</a>
             <a href="#sdk" className="hover:text-zinc-100 transition-colors">SDK</a>
             <a href="#faq" className="hover:text-zinc-100 transition-colors">FAQ</a>
-            <Link href="/dashboard/docs" className="hover:text-zinc-100 transition-colors">Docs</Link>
+            <Link href="/dashboard/docs" className="hover:text-zinc-100 transition-colors">Documentation</Link>
           </nav>
 
           {/* Right Actions */}
@@ -199,22 +205,22 @@ export default function LandingPage() {
         </div>
       </header>
 
-      <main className="relative max-w-7xl mx-auto px-6 pt-16 pb-28 space-y-36">
-        {/* ─── 2. Hero Section ─── */}
-        <section className="text-center max-w-4xl mx-auto space-y-8 pt-4">
+      <main className="relative z-10 max-w-7xl mx-auto px-6 pt-16 pb-28 space-y-36">
+        {/* ─── Hero Section ─── */}
+        <section className="text-center max-w-4xl mx-auto space-y-8 pt-8">
           {/* Tactical Status Pill */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] text-[11px] font-semibold uppercase tracking-wider text-emerald-400">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span>Zero-Bandwidth S3 · Sub-15ms CDC Replication</span>
           </div>
 
-          {/* Editorial Display Headline with Elsie */}
+          {/* Editorial Headline with Elsie & Gloock */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-white font-elsie tracking-tight leading-[1.08]">
             #1 Unified Backend Engine<br />
             for <em className="italic font-normal font-gloock text-indigo-300">Modern Apps &amp; AI Agents</em>
           </h1>
 
-          <p className="text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto leading-relaxed">
             Schema-isolated PostgreSQL tables, direct AWS S3 presigned object uploads, zero-latency CDC WebSocket streams, and native Gemini GenAI intelligence in a single TypeScript SDK.
           </p>
 
@@ -222,7 +228,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
             <button
               onClick={handleCopyKeycap}
-              className="group flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#09090b] border border-white/[0.1] hover:border-indigo-500/40 transition-all cursor-pointer shadow-lg"
+              className="group flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#09090b]/90 border border-white/[0.1] hover:border-indigo-500/40 transition-all cursor-pointer shadow-lg backdrop-blur-md"
               title="Click to copy install command"
             >
               <kbd className="tactile-key">pnpm</kbd>
@@ -245,8 +251,8 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── 3. Infinite Marquee Trust Carousel ─── */}
-        <section className="relative overflow-hidden py-4 border-y border-white/[0.06] bg-[#070709]/50">
+        {/* ─── Infinite Marquee Ecosystem Carousel ─── */}
+        <section className="relative overflow-hidden py-4 border-y border-white/[0.06] bg-[#070709]/60 backdrop-blur-md">
           <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#030303] via-[#030303]/90 to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#030303] via-[#030303]/90 to-transparent z-10 pointer-events-none" />
 
@@ -263,8 +269,8 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── 4. Live Benchmarks Metrics Bar ─── */}
-        <section id="benchmarks" className="rounded-2xl border border-white/[0.08] bg-[#09090b] p-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        {/* ─── Live Benchmarks Metrics Bar ─── */}
+        <section id="benchmarks" className="rounded-2xl border border-white/[0.08] bg-[#09090b]/80 backdrop-blur-md p-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div>
             <div className="text-3xl sm:text-5xl font-black text-indigo-400 font-handjet">&lt; 15ms</div>
             <div className="text-[11px] text-zinc-400 mt-1 uppercase tracking-wider font-mono font-semibold">CDC Broadcast Latency</div>
@@ -283,161 +289,46 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── 5. Core Subsystems Bento Grid (`#how-it-works`) ─── */}
+        {/* ─── Architectural Line-Divided Deep Dive (No Box Slop) ─── */}
         <section id="how-it-works" className="space-y-12">
           <div className="text-center max-w-xl mx-auto space-y-3">
             <h2 className="text-3xl sm:text-4xl font-black text-white font-elsie tracking-tight">
               How Zorabase <em className="italic font-normal font-gloock">works</em>
             </h2>
             <p className="text-xs text-zinc-400 leading-relaxed">
-              Three specialized subsystems engineered for maximum developer velocity and zero operational overhead.
+              Four specialized subsystems engineered for maximum developer velocity, zero bandwidth waste, and predictable latencies.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Bento Card 01 (Blue #3b82f6 Glow) */}
-            <div className="relative rounded-2xl border border-white/[0.08] bg-[#09090b] p-7 space-y-5 overflow-hidden group hover:border-blue-500/40 transition-all">
-              <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/[0.12] rounded-full blur-3xl pointer-events-none group-hover:bg-blue-500/[0.2] transition-all" />
-              
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded">
-                  Subsystem 01
-                </span>
-                <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  0 MB Server Load
-                </span>
-              </div>
+          <div className="space-y-8 divide-y divide-white/[0.06]">
+            {architecturalPillars.map((p) => (
+              <div
+                key={p.number}
+                className="pt-8 first:pt-0 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start group"
+              >
+                <div className="lg:col-span-4 space-y-2">
+                  <div className="flex items-center gap-3">
+                    <span className="font-handjet text-2xl font-bold text-indigo-400">{p.number}</span>
+                    <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-400 bg-white/[0.04] border border-white/[0.06] px-2.5 py-0.5 rounded">
+                      {p.category}
+                    </span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-semibold text-zinc-100 group-hover:text-indigo-200 transition-colors">
+                    {p.title}
+                  </h3>
+                </div>
 
-              <div className="space-y-2">
-                <h3 className="text-base font-semibold text-zinc-100">Direct S3 Presigned Uploads</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">
-                  Cryptographically signed AWS Signature v4 URLs let clients stream files directly to S3 (<code className="text-zinc-300 font-mono">eu-north-1</code>) with zero Node.js bandwidth or CPU overhead.
-                </p>
+                <div className="lg:col-span-8">
+                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                    {p.desc}
+                  </p>
+                </div>
               </div>
-
-              <div className="rounded-lg border border-white/[0.06] bg-[#060608] p-3 font-mono text-[11px] text-zinc-400 space-y-1">
-                <div className="text-blue-400 font-bold">PUT https://s3.eu-north-1.amazonaws.com/...</div>
-                <div className="text-zinc-500 text-[10px]">X-Amz-Signature: 8f92a1bc40e... (Expires 900s)</div>
-              </div>
-            </div>
-
-            {/* Bento Card 02 (Purple #a855f7 Glow) */}
-            <div className="relative rounded-2xl border border-white/[0.08] bg-[#09090b] p-7 space-y-5 overflow-hidden group hover:border-purple-500/40 transition-all">
-              <div className="absolute -top-24 -right-24 w-48 h-48 bg-purple-500/[0.12] rounded-full blur-3xl pointer-events-none group-hover:bg-purple-500/[0.2] transition-all" />
-              
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded">
-                  Subsystem 02
-                </span>
-                <span className="text-[11px] font-mono text-purple-300 font-medium">
-                  &lt;60ms Buffer
-                </span>
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="text-base font-semibold text-zinc-100">Gemini GenAI Database Analyst</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">
-                  Natural language database querying with dynamic schema introspection. Generate structured summaries and pin live insight widgets with 1 click.
-                </p>
-              </div>
-
-              <div className="rounded-lg border border-white/[0.06] bg-[#060608] p-3 font-mono text-[11px] text-zinc-400 space-y-1">
-                <div className="text-purple-400 font-bold">&quot;Show pending high-priority orders&quot;</div>
-                <div className="text-zinc-500 text-[10px]">⚡ Gemini 2.5 Flash: 14 matching records identified</div>
-              </div>
-            </div>
-
-            {/* Bento Card 03 (Emerald #10b981 Glow) */}
-            <div className="relative rounded-2xl border border-white/[0.08] bg-[#09090b] p-7 space-y-5 overflow-hidden group hover:border-emerald-500/40 transition-all">
-              <div className="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/[0.12] rounded-full blur-3xl pointer-events-none group-hover:bg-emerald-500/[0.2] transition-all" />
-              
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
-                  Subsystem 03
-                </span>
-                <span className="text-[11px] font-mono text-emerald-300 font-medium">
-                  ⏱️ &lt;15ms Latency
-                </span>
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="text-base font-semibold text-zinc-100">Sub-15ms Realtime CDC Streams</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">
-                  Attaches directly to PostgreSQL Write-Ahead Log (WAL) logical replication. Dispatches <code className="text-zinc-300 font-mono">INSERT</code>, <code className="text-zinc-300 font-mono">UPDATE</code>, and <code className="text-zinc-300 font-mono">DELETE</code> payloads to active WebSockets.
-                </p>
-              </div>
-
-              <div className="rounded-lg border border-white/[0.06] bg-[#060608] p-3 font-mono text-[11px] text-zinc-400 space-y-1">
-                <div className="text-emerald-400 font-bold">EVENT: INSERT [orders.id: rec_8f2a]</div>
-                <div className="text-zinc-500 text-[10px]">Logical stream decoded &amp; delivered via WS</div>
-              </div>
-            </div>
+            ))}
           </div>
         </section>
 
-        {/* ─── 6. AI Schema Drift Comparison Section (`#guardrails`) ─── */}
-        <section id="guardrails" className="space-y-10">
-          <div className="text-center max-w-xl mx-auto space-y-3">
-            <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
-              Critical Problem Solved
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-white font-elsie tracking-tight">
-              Eliminating AI Coding Agent <em className="italic font-normal font-gloock">Schema Drift</em>
-            </h2>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              How Zorabase prevents autonomous AI coding tools from breaking your production database.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Without Zorabase */}
-            <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.02] p-7 space-y-4">
-              <div className="flex items-center gap-2 text-red-400 font-semibold text-sm">
-                <span>❌</span>
-                <span>Traditional BaaS &amp; Raw PostgreSQL</span>
-              </div>
-              <ul className="space-y-3 text-xs text-zinc-400 leading-relaxed">
-                <li className="flex items-start gap-2">
-                  <span className="text-red-400">✕</span>
-                  <span>AI agents invent duplicate or colliding columns during automated refactoring tasks.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-red-400">✕</span>
-                  <span>Executing destructive DDL (<code className="text-zinc-300 font-mono">ALTER TABLE</code>) locks tables and crashes production traffic.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-red-400">✕</span>
-                  <span>Hardcoding server secret keys into frontend mobile bundles exposing full database access.</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* With Zorabase */}
-            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/[0.02] p-7 space-y-4">
-              <div className="flex items-center gap-2 text-emerald-400 font-semibold text-sm">
-                <span>✓</span>
-                <span>Zorabase 3-Tier Guardrail Protection</span>
-              </div>
-              <ul className="space-y-3 text-xs text-zinc-300 leading-relaxed">
-                <li className="flex items-start gap-2">
-                  <span className="text-emerald-400">✓</span>
-                  <span><strong className="text-zinc-100">Pre-Flight Schema Introspection:</strong> AI prompts enforce active column awareness before code generation.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-emerald-400">✓</span>
-                  <span><strong className="text-zinc-100">Public Key DDL Lockdown:</strong> Public client keys (<code className="text-zinc-200 font-mono">pk_live_...</code>) are cryptographically blocked from DDL.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-emerald-400">✓</span>
-                  <span><strong className="text-zinc-100">Zero-Downtime JSONB Records:</strong> Dynamic column attributes are indexed without locking database tables.</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* ─── 7. Interactive Architecture & Code Studio (`#sdk`) ─── */}
+        {/* ─── Interactive Architecture & Code Studio (`#sdk`) ─── */}
         <section id="sdk" className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -488,40 +379,17 @@ export default function LandingPage() {
               </div>
             </div>
 
+            <div className="p-4 bg-[#08080a] border-b border-white/[0.04] text-xs text-zinc-400">
+              {codeSnippets[activeCodeTab].summary}
+            </div>
+
             <pre className="p-6 text-xs font-mono text-zinc-300 leading-relaxed overflow-x-auto">
               <code>{codeSnippets[activeCodeTab].code}</code>
             </pre>
           </div>
         </section>
 
-        {/* ─── 8. Technical Capability Matrix (6-Card Grid) ─── */}
-        <section id="architecture" className="space-y-10">
-          <div className="text-center max-w-xl mx-auto space-y-3">
-            <h2 className="text-3xl sm:text-4xl font-black text-white font-elsie tracking-tight">
-              Engineered for <em className="italic font-normal font-gloock">Enterprise Reliability</em>
-            </h2>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              Every architectural layer is designed for deterministic latency, zero downtime, and strict multi-tenant isolation.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuresGrid.map((f) => (
-              <div
-                key={f.title}
-                className="rounded-2xl border border-white/[0.08] bg-[#09090b] p-6 space-y-3 hover:border-white/[0.15] transition-all"
-              >
-                <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded">
-                  {f.tag}
-                </span>
-                <h3 className="text-sm font-semibold text-zinc-100">{f.title}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ─── 9. Developer FAQ Accordion (`#faq`) ─── */}
+        {/* ─── Developer FAQ Accordion (`#faq`) ─── */}
         <section id="faq" className="space-y-10 max-w-3xl mx-auto">
           <div className="text-center space-y-3">
             <h2 className="text-3xl sm:text-4xl font-black text-white font-elsie tracking-tight">
@@ -558,7 +426,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ─── 10. High-Contrast Luxury Light Conversion Section ─── */}
+        {/* ─── High-Contrast Luxury Light Conversion Section ─── */}
         <section className="rounded-3xl bg-white text-zinc-900 p-8 sm:p-14 shadow-2xl space-y-6">
           <div className="max-w-2xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-[11px] font-semibold text-indigo-600 uppercase tracking-wider">
@@ -596,13 +464,13 @@ export default function LandingPage() {
           </p>
         </section>
 
-        {/* ─── 11. Giant Brand Watermark ─── */}
+        {/* ─── Giant Brand Watermark ─── */}
         <div className="flex justify-center -mb-20 overflow-hidden select-none pointer-events-none">
           <span className="brand-watermark-text font-elsie">ZORABASE</span>
         </div>
       </main>
 
-      {/* ─── 12. Minimalist Footer ─── */}
+      {/* ─── Minimalist Footer ─── */}
       <footer className="border-t border-white/[0.08] bg-[#09090b] py-8 text-center text-xs text-zinc-500">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
