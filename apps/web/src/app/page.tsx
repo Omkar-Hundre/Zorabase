@@ -144,6 +144,7 @@ const Check = () => (
 
 export default function LandingPage() {
   const [activeTab, setActiveTab] = useState('database')
+  const [heroCliTab, setHeroCliTab] = useState<'sdk' | 'mcp'>('sdk')
   const [copied, setCopied] = useState(false)
   const [copiedCode, setCopiedCode] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(0)
@@ -183,7 +184,7 @@ export default function LandingPage() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-7 text-[12px] font-medium text-[#a1a1aa] absolute left-1/2 -translate-x-1/2">
-            {['Architecture', 'Benchmarks', 'SDK', 'FAQ'].map((label) => (
+            {['Architecture', 'Benchmarks', 'SDK', 'MCP', 'FAQ'].map((label) => (
               <a key={label} href={`#${label.toLowerCase()}`} className="hover:text-white transition-colors">
                 {label}
               </a>
@@ -238,7 +239,7 @@ export default function LandingPage() {
             </h1>
 
             <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal drop-shadow">
-              Ship in seconds with schema-isolated PostgreSQL, direct AWS S3 uploads without server transit, sub-15ms CDC live streams, and AI guardrails.
+              Ship in seconds with schema-isolated PostgreSQL, direct AWS S3 uploads without server transit, sub-15ms CDC live streams, and native MCP for AI coding agents.
             </p>
           </div>
 
@@ -252,24 +253,54 @@ export default function LandingPage() {
               <Arrow />
             </Link>
 
-            <button
-              onClick={() => copy('pnpm add @zorabase/sdk', 'install')}
-              className="group flex items-center gap-2 h-12 px-4 rounded-xl bg-[#09090b]/90 hover:bg-[#121216] border border-white/[0.12] hover:border-sky-400/50 transition-all cursor-pointer text-[12px] text-slate-300 backdrop-blur-md shadow-lg"
-            >
-              <span className="font-mono text-sky-400">$</span>
-              <span className="font-mono font-medium text-slate-200">pnpm add @zorabase/sdk</span>
-              <span className="ml-3 font-mono text-[11px] text-slate-400 group-hover:text-white px-2 py-0.5 rounded bg-white/[0.06] transition-colors">
-                {copied ? '✓ copied' : 'copy'}
-              </span>
-            </button>
+            {/* Interactive CLI Switcher */}
+            <div className="flex items-center rounded-xl bg-[#09090b]/90 border border-white/[0.12] p-1 shadow-lg backdrop-blur-md">
+              <button
+                onClick={() => setHeroCliTab('sdk')}
+                className={`px-3 py-2 rounded-lg text-[11px] font-mono transition-all ${
+                  heroCliTab === 'sdk'
+                    ? 'bg-[#203665] text-white border border-sky-400/30 shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                SDK
+              </button>
+              <button
+                onClick={() => setHeroCliTab('mcp')}
+                className={`px-3 py-2 rounded-lg text-[11px] font-mono transition-all ${
+                  heroCliTab === 'mcp'
+                    ? 'bg-[#203665] text-white border border-sky-400/30 shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                MCP (AI)
+              </button>
+              <button
+                onClick={() =>
+                  copy(
+                    heroCliTab === 'sdk' ? 'pnpm add @zorabase/sdk' : 'npx -y @zorabase/mcp',
+                    'install'
+                  )
+                }
+                className="group flex items-center gap-2 px-3 py-2 text-[12px] text-slate-300 hover:text-white transition-colors cursor-pointer"
+              >
+                <span className="font-mono text-sky-400">$</span>
+                <span className="font-mono font-medium text-slate-200">
+                  {heroCliTab === 'sdk' ? 'pnpm add @zorabase/sdk' : 'npx -y @zorabase/mcp'}
+                </span>
+                <span className="font-mono text-[11px] text-slate-400 group-hover:text-white px-2 py-0.5 rounded bg-white/[0.06] transition-colors">
+                  {copied ? '✓ copied' : 'copy'}
+                </span>
+              </button>
+            </div>
           </div>
 
           {/* SaaS Feature Badges */}
           <div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-6 pt-2 text-[12px] text-slate-400 font-medium">
-            <div className="flex items-center gap-1.5"><Check /> Zero Config PostgreSQL</div>
+            <div className="flex items-center gap-1.5"><Check /> <code className="text-sky-300 font-mono text-[11px]">@zorabase/sdk</code> on npm</div>
+            <div className="flex items-center gap-1.5"><Check /> <code className="text-sky-300 font-mono text-[11px]">@zorabase/mcp</code> for Cursor &amp; Claude</div>
             <div className="flex items-center gap-1.5"><Check /> 0MB Server S3 Uploads</div>
-            <div className="flex items-center gap-1.5"><Check /> 15ms CDC Replication</div>
-            <div className="flex items-center gap-1.5"><Check /> MIT Licensed SDK</div>
+            <div className="flex items-center gap-1.5"><Check /> 15ms CDC Live Stream</div>
           </div>
 
           {/* SaaS Product Interactive Preview Card */}

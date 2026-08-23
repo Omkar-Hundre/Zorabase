@@ -5,14 +5,15 @@ import { useState } from 'react'
 const navSections = [
   { id: 'playground', title: 'Interactive API Playground', tag: 'Live' },
   { id: 'introduction', title: '1. Introduction & Core Concepts' },
-  { id: 'ai-guardrails', title: '2. AI Coding Agent Guardrails', tag: 'Critical' },
-  { id: 'database-engine', title: '3. Database & Query Engine' },
-  { id: 'filter-matrix', title: '4. Filter Operators Reference' },
-  { id: 'storage-architecture', title: '5. S3 Presigned Storage' },
-  { id: 'realtime-cdc', title: '6. Realtime CDC & WebSockets' },
-  { id: 'sdk-reference', title: '7. TypeScript SDK Reference' },
-  { id: 'rest-api-spec', title: '8. REST API & Error Codes' },
-  { id: 'security-cors', title: '9. Security, CORS & Rate Limits' },
+  { id: 'mcp-server', title: '2. MCP Server & AI Agents', tag: 'New' },
+  { id: 'ai-guardrails', title: '3. AI Coding Agent Guardrails', tag: 'Critical' },
+  { id: 'database-engine', title: '4. Database & Query Engine' },
+  { id: 'filter-matrix', title: '5. Filter Operators Reference' },
+  { id: 'storage-architecture', title: '6. S3 Presigned Storage' },
+  { id: 'realtime-cdc', title: '7. Realtime CDC & WebSockets' },
+  { id: 'sdk-reference', title: '8. TypeScript SDK Reference' },
+  { id: 'rest-api-spec', title: '9. REST API & Error Codes' },
+  { id: 'security-cors', title: '10. Security, CORS & Rate Limits' },
 ]
 
 export default function DocsPage() {
@@ -244,7 +245,127 @@ export default function DocsPage() {
             </div>
           )}
 
-          {/* ─── 2. AI Coding Agent Guardrails (Critical Problem) ─── */}
+          {/* ─── 2. Model Context Protocol (MCP) Server ─── */}
+          {activeTab === 'mcp-server' && (
+            <div className="space-y-6">
+              <div className="border-b border-white/[0.06] pb-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="w-2 h-2 rounded-full bg-sky-400" />
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-sky-400">
+                    AI Agent Native Protocol
+                  </span>
+                </div>
+                <h2 className="text-base font-bold text-zinc-100">
+                  2. Model Context Protocol (MCP) Server (`@zorabase/mcp`)
+                </h2>
+                <p className="text-zinc-400 mt-1">
+                  Connect Cursor, Claude Desktop, Antigravity, Cline, or any MCP-compatible AI agent to your Zorabase project with native JSON-RPC stdio transport.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <p>
+                  The <code className="text-sky-300 font-mono">@zorabase/mcp</code> package implements the open Model Context Protocol standard, exposing your Zorabase database, AWS S3 storage presigner, and cluster telemetry directly into LLM tool-calling contexts.
+                </p>
+
+                <div className="rounded-xl border border-sky-500/20 bg-sky-500/[0.03] p-5 space-y-4">
+                  <h3 className="text-sm font-semibold text-sky-300">1-Click Agent Configuration</h3>
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    Add the following JSON block to your AI coding agent configuration (<code className="text-zinc-200">.cursor/mcp.json</code> or <code className="text-zinc-200">claude_desktop_config.json</code>). No global installation needed — agents execute <code className="text-zinc-200">npx</code> on-demand:
+                  </p>
+
+                  <div className="rounded-lg border border-white/[0.08] bg-[#050508] p-4 overflow-x-auto">
+                    <pre className="text-xs font-mono text-zinc-200 leading-relaxed">{`{
+  "mcpServers": {
+    "zorabase": {
+      "command": "npx",
+      "args": ["-y", "@zorabase/mcp"],
+      "env": {
+        "ZORABASE_PROJECT_URL": "https://api.zorabase.io/v1/proj_YOUR_PROJECT_ID",
+        "ZORABASE_API_KEY": "zb_live_YOUR_API_KEY"
+      }
+    }
+  }
+}`}</pre>
+                  </div>
+                </div>
+
+                <div className="space-y-3 pt-2">
+                  <h3 className="text-sm font-semibold text-zinc-200">Available MCP Tools ({`9`})</h3>
+                  <div className="rounded-xl border border-white/[0.08] bg-[#08080a] overflow-hidden">
+                    <table className="w-full text-left text-xs font-mono border-collapse">
+                      <thead>
+                        <tr className="border-b border-white/[0.08] bg-white/[0.02] text-zinc-400">
+                          <th className="py-3 px-4">Tool Name</th>
+                          <th className="py-3 px-4">Parameters</th>
+                          <th className="py-3 px-4 font-sans">Capability &amp; Use Case</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/[0.04] text-zinc-300">
+                        <tr>
+                          <td className="py-3 px-4 text-sky-300">list_tables</td>
+                          <td className="py-3 px-4 text-zinc-500">none</td>
+                          <td className="py-3 px-4 font-sans text-zinc-400">List all tables in the active project schema namespace.</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 px-4 text-sky-300">get_table_schema</td>
+                          <td className="py-3 px-4 text-zinc-400">table_name</td>
+                          <td className="py-3 px-4 font-sans text-zinc-400">Inspect column definitions, types, and GIN indexes.</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 px-4 text-sky-300">query_data</td>
+                          <td className="py-3 px-4 text-zinc-400">table_name, columns, filters, limit, order_by</td>
+                          <td className="py-3 px-4 font-sans text-zinc-400">Execute structured queries with equality filters and sorting.</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 px-4 text-sky-300">insert_record</td>
+                          <td className="py-3 px-4 text-zinc-400">table_name, record</td>
+                          <td className="py-3 px-4 font-sans text-zinc-400">Insert new records into any schema table.</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 px-4 text-sky-300">update_record</td>
+                          <td className="py-3 px-4 text-zinc-400">table_name, record, match</td>
+                          <td className="py-3 px-4 font-sans text-zinc-400">Update matching records safely using equality filters.</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 px-4 text-sky-300">delete_record</td>
+                          <td className="py-3 px-4 text-zinc-400">table_name, match</td>
+                          <td className="py-3 px-4 font-sans text-zinc-400">Delete records matching specified criteria.</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 px-4 text-sky-300">get_storage_upload_url</td>
+                          <td className="py-3 px-4 text-zinc-400">bucket, file_path, content_type</td>
+                          <td className="py-3 px-4 font-sans text-zinc-400">Generate direct AWS S3 presigned upload URL (0 MB server load).</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 px-4 text-sky-300">get_storage_download_url</td>
+                          <td className="py-3 px-4 text-zinc-400">bucket, file_path, expires_in</td>
+                          <td className="py-3 px-4 font-sans text-zinc-400">Generate time-limited signed S3 download URL.</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 px-4 text-sky-300">get_project_health</td>
+                          <td className="py-3 px-4 text-zinc-500">none</td>
+                          <td className="py-3 px-4 font-sans text-zinc-400">Check PostgreSQL connection, WAL replication status, and memory.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-amber-500/20 bg-amber-500/[0.04] p-4 flex items-start gap-3">
+                  <span className="text-amber-400 text-sm shrink-0">🛡️</span>
+                  <div className="text-xs text-zinc-400 space-y-1">
+                    <p className="font-semibold text-zinc-300">Built-in DDL Guardrails</p>
+                    <p>
+                      The MCP server enforces runtime guardrails: <code className="text-zinc-200">DROP TABLE</code>, <code className="text-zinc-200">TRUNCATE</code>, and <code className="text-zinc-200">ALTER TABLE</code> commands are strictly blocked to ensure AI coding agents cannot corrupt production databases.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ─── 3. AI Coding Agent Guardrails (Critical Problem) ─── */}
           {activeTab === 'ai-guardrails' && (
             <div className="space-y-6">
               <div className="border-b border-white/[0.06] pb-4">

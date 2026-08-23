@@ -9,13 +9,15 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![AWS S3](https://img.shields.io/badge/AWS_S3-Storage-FF9900?style=for-the-badge&logo=amazons3&logoColor=white)](https://aws.amazon.com/s3/)
 [![Google Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-GenAI-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![npm @zorabase/sdk](https://img.shields.io/badge/npm-%40zorabase%2Fsdk-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@zorabase/sdk)
+[![npm @zorabase/mcp](https://img.shields.io/badge/npm-%40zorabase%2Fmcp-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@zorabase/mcp)
 [![Render](https://img.shields.io/badge/Deploy-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://render.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 <br/>
 
 <p align="center">
-  <strong>Zorabase</strong> is an open, developer-first Backend-as-a-Service (BaaS) engineered to eliminate backend boilerplate for web, mobile, and AI applications. It combines schema-isolated relational databases, zero-server-bandwidth AWS S3 presigned storage, sub-15ms Change Data Capture (CDC) WebSocket streams, and native Gemini GenAI schema intelligence with an official type-safe TypeScript SDK.
+  <strong>Zorabase</strong> is an open, developer-first Backend-as-a-Service (BaaS) engineered to eliminate backend boilerplate for web, mobile, and AI applications. It combines schema-isolated relational databases, zero-server-bandwidth AWS S3 presigned storage, sub-15ms Change Data Capture (CDC) WebSocket streams, native Gemini GenAI schema intelligence, and an official Model Context Protocol (MCP) server for Cursor and Claude Desktop with an official type-safe TypeScript SDK.
 </p>
 
 </div>
@@ -31,6 +33,7 @@
 | **Storage Upload Bandwidth** | **0 MB Server Load** | AWS Signature v4 presigned direct PUT streams |
 | **Concurrent WebSockets** | **10,000+ per Node** | Non-blocking event-driven asynchronous connection broker |
 | **SDK Type Safety** | **100% TypeScript** | Dual ESM (`.mjs`) & CJS (`.js`) build with full `.d.ts` definitions |
+| **AI Agent MCP Server** | **Native MCP Support** | Stdio JSON-RPC server (`@zorabase/mcp`) with 9 built-in tools |
 | **AI Schema Drift** | **Zero Drift** | 3-tier pre-flight introspection & public key DDL lockdown |
 
 ---
@@ -190,6 +193,47 @@ channel.unsubscribe()
 
 ---
 
+## 🤖 Official Model Context Protocol (MCP) Server (`@zorabase/mcp`)
+
+Connect **Cursor**, **Claude Desktop**, **Antigravity**, **Cline**, or any MCP-compatible AI coding agent natively to your Zorabase projects with zero configuration files.
+
+### 1-Click Agent Configuration
+
+Add this block to your agent's MCP configuration (`.cursor/mcp.json` or `claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "zorabase": {
+      "command": "npx",
+      "args": ["-y", "@zorabase/mcp"],
+      "env": {
+        "ZORABASE_PROJECT_URL": "https://api.zorabase.io/v1/proj_YOUR_PROJECT_ID",
+        "ZORABASE_API_KEY": "zb_live_YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+### Supported MCP Tools
+
+| Tool Name | Capability & Use Case |
+| :--- | :--- |
+| `list_tables` | Introspect all tables in the active project namespace |
+| `get_table_schema` | Inspect column definitions, JSONB structures, and GIN indexes |
+| `query_data` | Execute structured queries with filters, ordering, and limits |
+| `insert_record` | Insert new records into any schema table |
+| `update_record` | Update matching records safely with equality filters |
+| `delete_record` | Delete records matching specified conditions |
+| `get_storage_upload_url` | Generate AWS S3 presigned direct upload URLs |
+| `get_storage_download_url` | Generate time-limited signed S3 download URLs |
+| `get_project_health` | Query PostgreSQL connection status, WAL health, and cluster metrics |
+
+> **Security Guardrail:** The MCP server automatically enforces DDL guardrails — blocking `DROP TABLE`, `TRUNCATE`, and `ALTER TABLE` commands from AI agents to prevent accidental schema corruption.
+
+---
+
 ## 🌐 REST API Reference
 
 All REST endpoints support automated CORS preflight checks (`OPTIONS`) and require standard authentication headers:
@@ -233,15 +277,18 @@ Content-Type: application/json
 Zorabase/
 ├── apps/
 │   └── web/                   # Next.js 16 (App Router) Control Plane & Dashboard
-│       ├── src/app/           # API routes, Auth, and Dashboard views
+│       ├── src/app/           # API routes, Auth, MCP and Dashboard views
 │       ├── src/components/    # Tailwind UI components (Database, Storage, Realtime, Docs)
 │       └── src/lib/           # S3 Client, Gemini AI, Supabase Auth, CORS utilities
 ├── packages/
-│   └── sdk/                   # Official @zorabase/sdk (ESM/CJS Dual Build via tsup)
-│       ├── src/client.ts      # ZorabaseClient root entry
-│       ├── src/database.ts    # Chainable QueryBuilder
-│       ├── src/storage.ts     # S3 Presigned Upload client
-│       └── src/realtime.ts    # WebSocket CDC channel listener
+│   ├── sdk/                   # Official @zorabase/sdk (ESM/CJS Dual Build via tsup)
+│   │   ├── src/client.ts      # ZorabaseClient root entry
+│   │   ├── src/database.ts    # Chainable QueryBuilder
+│   │   ├── src/storage.ts     # S3 Presigned Upload client
+│   │   └── src/realtime.ts    # WebSocket CDC channel listener
+│   └── mcp/                   # Official @zorabase/mcp Server (Stdio JSON-RPC)
+│       ├── src/index.ts       # MCP Server, Tool Handlers & DDL Guardrails
+│       └── package.json       # Runnable via `npx @zorabase/mcp`
 ├── render.yaml                # 1-Click Render Deployment Blueprint
 ├── pnpm-workspace.yaml        # Monorepo Workspace Configuration
 └── package.json               # Root Build & Start Scripts
